@@ -1,0 +1,32 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "url": "https://n8n-production-16c8.up.railway.app/webhook/teste",
+        "options": {},
+        "bodyParametersUi": {
+          "parameter": [
+            {
+              "name": "comando",
+              "value": "executar_fluxo"
+            },
+            {
+              "name": "token",
+              "value": "dj38ds9dns9d02dn29dj203d92jd2039dj203dj"
+            }
+          ]
+        }
+      },
+      "name": "Enviar comando",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        450,
+        300
+      ]
+    }
+  ],
+  "connections": {},
+  "timestamp": "2025-05-23T06:20:00.535944"
+}
