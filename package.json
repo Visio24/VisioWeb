@@ -1,0 +1,16 @@
+{
+  "name": "gpt-n8n-agent",
+  "version": "1.0.0",
+  "description": "Agente inteligente para controlar o N8n com comandos do ChatGPT",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": ["gpt", "n8n", "automação", "chatgpt", "api"],
+  "author": "Visio24",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.8",
+    "express": "^4.18.4"
+  }
+}
