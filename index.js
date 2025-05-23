@@ -1,1 +1,37 @@
 console.log("Sistema GPT-N8n iniciado com sucesso!");
+import express from 'express'
+import axios from 'axios'
+
+const app = express()
+app.use(express.json())
+
+app.get('/', (req, res) => {
+  res.send('Sistema GPT-N8n iniciado com sucesso!')
+})
+
+app.post('/fluxo', async (req, res) => {
+  try {
+    const { fluxo } = req.body
+
+    const resposta = await axios.post(
+      'https://SEU_N8N_HOST_URL/webhook/endpoint',
+      fluxo,
+      {
+        headers: {
+          Authorization: 'Bearer SEU_TOKEN_DO_N8N',
+          'Content-Type': 'application/json',
+        },
+      }
+    )
+
+    res.status(200).json({ status: 'ok', data: resposta.data })
+  } catch (err) {
+    console.error('Erro ao enviar fluxo:', err.message)
+    res.status(500).json({ erro: 'Erro ao enviar fluxo para o N8n' })
+  }
+})
+
+const PORT = process.env.PORT || 3000
+app.listen(PORT, () => {
+  console.log(`Servidor rodando na porta ${PORT}`)
+})
