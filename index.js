@@ -1,37 +1,53 @@
-console.log("Sistema GPT-N8n iniciado com sucesso!");
-import express from 'express'
-import axios from 'axios'
+import express from "express";
+import bodyParser from "body-parser";
+import axios from "axios";
 
-const app = express()
-app.use(express.json())
+const app = express();
+const PORT = process.env.PORT || 3000;
 
-app.get('/', (req, res) => {
-  res.send('Sistema GPT-N8n iniciado com sucesso!')
-})
+// Token do N8n (já incluso no código)
+const N8N_API_TOKEN = "SEU_TOKEN_AQUI";
 
-app.post('/fluxo', async (req, res) => {
+// ID fixo do projeto onde os fluxos serão criados
+const PROJECT_ID = "SEU_PROJECT_ID_AQUI";
+
+// URL base do N8n em nuvem
+const N8N_API_URL = "https://n8n-production-XXXXX.up.railway.app/api/v1/workflows";
+
+app.use(bodyParser.json());
+
+app.post("/create-flow", async (req, res) => {
   try {
-    const { fluxo } = req.body
+    const { name, nodes } = req.body;
 
-    const resposta = await axios.post(
-      'https://SEU_N8N_HOST_URL/webhook/endpoint',
-      fluxo,
+    const response = await axios.post(
+      N8N_API_URL,
+      {
+        name,
+        nodes,
+        connections: {},
+        settings: {},
+        tags: [],
+        pinData: {},
+        versionId: "",
+        projectId: PROJECT_ID,
+      },
       {
         headers: {
-          Authorization: 'Bearer SEU_TOKEN_DO_N8N',
-          'Content-Type': 'application/json',
+          "Authorization": `Bearer ${N8N_API_TOKEN}`,
+          "Content-Type": "application/json",
         },
       }
-    )
+    );
 
-    res.status(200).json({ status: 'ok', data: resposta.data })
-  } catch (err) {
-    console.error('Erro ao enviar fluxo:', err.message)
-    res.status(500).json({ erro: 'Erro ao enviar fluxo para o N8n' })
+    res.status(200).json({ message: "Fluxo criado com sucesso!", data: response.data });
+  } catch (error) {
+    console.error("Erro ao criar fluxo:", error.response?.data || error.message);
+    res.status(500).json({ error: "Erro ao criar fluxo." });
   }
-})
+});
 
-const PORT = process.env.PORT || 3000
 app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`)
-})
+  console.log(`Servidor rodando na porta ${PORT}`);
+});
+
