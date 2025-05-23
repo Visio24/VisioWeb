@@ -1,52 +1,15 @@
 {
-  "name": "gpt-n8n-agent",
+  "name": "gpt-n8n-connector",
   "version": "1.0.0",
-  "description": "Agente inteligente para controlar o N8n com comandos do ChatGPT",
+  "description": "Conector entre ChatGPT e N8n via API",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "node index.js"
   },
-  "keywords": ["gpt", "n8n", "automação", "chatgpt", "api"],
-  "author": "Visio24",
-  "license": "MIT",
   "dependencies": {
-    "axios": "^1.6.8",
-    "express": "^4.18.4"
+    "axios": "^1.6.7",
+    "body-parser": "^1.20.2",
+    "express": "^4.18.2"
   }
 }
-import express from 'express'
-import axios from 'axios'
-
-const app = express()
-app.use(express.json())
-
-app.get('/', (req, res) => {
-  res.send('Sistema GPT-N8n iniciado com sucesso!')
-})
-
-app.post('/fluxo', async (req, res) => {
-  try {
-    const { fluxo } = req.body
-
-    const resposta = await axios.post(
-      'https://SEU_N8N_HOST_URL/webhook/endpoint',
-      fluxo,
-      {
-        headers: {
-          Authorization: 'Bearer SEU_TOKEN_DO_N8N',
-          'Content-Type': 'application/json',
-        },
-      }
-    )
-
-    res.status(200).json({ status: 'ok', data: resposta.data })
-  } catch (err) {
-    console.error('Erro ao enviar fluxo:', err.message)
-    res.status(500).json({ erro: 'Erro ao enviar fluxo para o N8n' })
-  }
-})
-
-const PORT = process.env.PORT || 3000
-app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`)
-})
